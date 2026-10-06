@@ -1,0 +1,11 @@
+services:
+  load-planner:
+    build: .
+    image: truck-load-planner:latest
+    container_name: truck-load-planner
+    ports:
+      - "8000:8000"
+    environment:
+      # CP-SAT 单次求解的确定性时间上限（秒）
+      SOLVER_TIME_LIMIT: "20"
+    restart: unless-stopped
