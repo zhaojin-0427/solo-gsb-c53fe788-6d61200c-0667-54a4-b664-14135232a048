@@ -1,0 +1,20 @@
+services:
+  planner:
+    build: .
+    image: truck-loading-planner
+    ports:
+      - "8000:8000"
+    environment:
+      # CP-SAT hard time limit per request (seconds)
+      SOLVER_TIME_LIMIT: "20"
+      # parallel search workers
+      SOLVER_WORKERS: "8"
+      # extra seconds spent improving the first feasible plan
+      SOLVER_GRACE_SECONDS: "2"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
